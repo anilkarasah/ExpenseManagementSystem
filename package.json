@@ -1,0 +1,26 @@
+{
+  "name": "expensemanagementsystem",
+  "version": "1.0.0",
+  "description": "Sistem Analiz ve Tasarımı dersi için geliştirilen: Gider Yönetim Sistemi. Atakan Arslan, Mehmet Anıl Karaşah, Muhammet Nasır Sabır, Umut Deşer, Yasemin Atmaca",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anilkarasah/ExpenseManagementSystem.git"
+  },
+  "author": "Mehmet Anıl Karaşah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anilkarasah/ExpenseManagementSystem/issues"
+  },
+  "homepage": "https://github.com/anilkarasah/ExpenseManagementSystem#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  }
+}
