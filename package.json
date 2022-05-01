@@ -1,5 +1,5 @@
 {
-  "name": "expensemanagementsystem",
+  "name": "ems",
   "version": "1.0.0",
   "description": "Sistem Analiz ve Tasarımı dersi için geliştirilen: Gider Yönetim Sistemi. Atakan Arslan, Mehmet Anıl Karaşah, Muhammet Nasır Sabır, Umut Deşer, Yasemin Atmaca",
   "main": "server.js",
@@ -17,10 +17,28 @@
   },
   "homepage": "https://github.com/anilkarasah/ExpenseManagementSystem#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.10",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15"
-  }
+    "nodemon": "^2.0.15",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "prettier": "^2.6.2"
+  },
+  "keywords": [
+    "expense",
+    "management",
+    "system"
+  ]
 }

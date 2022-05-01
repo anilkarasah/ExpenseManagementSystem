@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const ip = require('ip');
 
 process.on('uncaughtException', (err) => {
   console.log('Uncaught exception! Shutting down...');
@@ -12,8 +13,19 @@ dotenv.config({ path: './config.env' });
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
-  console.log(`Listening on port ${port}. NODE_ENV = ${process.env.NODE_ENV}`);
+  console.log(`Listening on ${ip.address()}:${port}`);
+  console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+  console.log(`PLATFORM = ${process.platform}`);
 });
+
+const DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD);
+mongoose.connect(DB).then(() => console.log('DB connection successful! ⭐'));
+  // ,{
+  // useNewUrlParser: true,
+  // // useCreateIndex: true,
+  // // useFindAndModify: false,
+  // useUnifiedTopology: true
+  // }
 
 process.on('unhandledRejection', (err) => {
   console.log('Unhandled rejection! Shutting down...');
