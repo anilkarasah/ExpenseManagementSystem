@@ -22,8 +22,9 @@ Contributors:
 
 ## To Do List
 
+- [ ] Assigning card leads to card duplication on user.
 - [ ] Card numbers must be masked on the response.
-- [ ] CVV numbers must be hidden on the response.
+- [x] CVV numbers must be hidden on the response.
 - [x] Added card model
 - [x] Added sign-up
 - [x] Added user model
