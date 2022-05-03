@@ -30,10 +30,25 @@ const userSchema = new mongoose.Schema({
             },
             message: 'Girdiğiniz şifreler uyuşmuyor. Lütfen kontrol ediniz.'
         }
-    }
+    },
+    cards: [
+        {
+            type: mongoose.SchemaTypes.ObjectID,
+            ref: 'Card'
+        }
+    ]
 });
 
-// 2) PRE
+// 2) PRE MIDDLEWARE
+
+userSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'cards',
+        select: '-__v -_id'
+    });
+    
+    next();
+});
 
 // 3) MIDDLEWARE
 
@@ -46,7 +61,9 @@ userSchema.pre('save', async function(next) {
     this.passwordConfirm = undefined;
     
     next();
-})
+});
+
+// 4) EXPORT
 
 const User = mongoose.model('User', userSchema);
 

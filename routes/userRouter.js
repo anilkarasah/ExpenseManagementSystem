@@ -8,4 +8,6 @@ router.route('/').get(userController.getAllUsers);
 
 router.route('/signup').post(authController.signup);
 
+router.route('/assignCard/:id').patch(userController.assignCard);
+
 module.exports = router;

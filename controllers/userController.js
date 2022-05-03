@@ -10,3 +10,20 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     data: { users }
   });
 });
+
+exports.assignCard = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+  
+  if (!user)
+    return next(new AppError('Bu ID\'ye sahip kullanıcı bulunamadı.', 404));
+    
+  res.status(200).json({
+    message: 'success',
+    data: {
+      user
+    }
+  })
+});
