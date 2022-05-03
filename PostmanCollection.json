@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "3faed389-4705-440d-8cd0-bd594333794b",
+		"name": "EMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Show All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Cart To User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cards\": [\"626fbc9540da6c64c635145c\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/users/assignCard/626e8580fdd91653c2814a85",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"assignCard",
+								"626e8580fdd91653c2814a85"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anıl Karaşah\",\r\n    \"email\": \"test@anil.io\",\r\n    \"password\": \"pass1234\",\r\n    \"passwordConfirm\": \"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/users/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "Create Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ownerName\": \"Mehmet Anıl Karaşah\",\r\n    \"cardNumber\": \"454312312341234\",\r\n    \"expireDate\": \"12/25\",\r\n    \"cvv\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/cards",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show All Cards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/cards",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
