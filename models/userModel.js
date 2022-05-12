@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const slugify = require('slugify');
 
 // 1) SCHEMA DECLARATION
 
@@ -36,7 +37,26 @@ const userSchema = new mongoose.Schema({
       type: mongoose.SchemaTypes.ObjectID,
       ref: 'Card'
     }
-  ]
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  },
+  securityQuestion: {
+    type: String,
+    required: [true, 'Lütfen güvenlik sorusu giriniz.'],
+    validator: {
+      validate: function (el) {
+        return validator.isAlpha(el.securityQuestion, 'tr-TR', ' ');
+      },
+      message:
+        'Güvenlik sorusu sadece harflerden(A-Z) ve rakamlardan(0-9) oluşmalıdır.'
+    }
+  },
+  questionAnswer: {
+    type: String,
+    required: [true, 'Lütfen güvenlik sorusunun cevabını giriniz.']
+  }
 });
 
 // 2) PRE MIDDLEWARE
@@ -60,7 +80,22 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// 3) EXPORT
+userSchema.pre('save', function (next) {
+  this.questionAnswer = slugify(this.questionAnswer, { lower: true });
+
+  next();
+});
+
+// 3) METHODS
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// 4) EXPORT
 
 const User = mongoose.model('User', userSchema);
 
