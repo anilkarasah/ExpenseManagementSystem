@@ -16,4 +16,7 @@ router
 
 router.route('/assignCard/:id').patch(userController.assignCard);
 
+router.route('/summaries').get(userController.listSummaries);
+router.route('/summaries/:id').get(userController.listSummariesOfUser);
+
 module.exports = router;

@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
 
 // 2) PRE MIDDLEWARE
 
-userSchema.pre('find', function (next) {
+userSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'cards',
     select: 'ownerName cardNumber expiryDate cardType -_id'
