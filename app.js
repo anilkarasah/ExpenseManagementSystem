@@ -1,10 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
+const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 app.use(express.json());
+
+app.use(hpp());
+
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
