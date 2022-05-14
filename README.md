@@ -7,28 +7,12 @@ Contributors:
 - Yasemin Atmaca @yaseminatmaca
 - Umut Deşer @deserumut
 
-## API Features
-
-### Users
-- `GET   /api/users` Show All Users
-
-### Authentication
-- `POST  /api/users/signup` Sign Up
-- `POST  /api/users/login` Log In
-- `POST  /api/users/forgotPassword` Forgot Password
-- `PATCH /api/users/forgotPassword` Reset Password
-
-### Cards
-- `GET   /api/cards` Show All Cards
-- `POST  /api/cards` Create a New Card
-- `PATCH /api/cards/assign` Assign Card
-
-### Summaries
-- `GET   /api/users/summaries` Show All Summaries
-- `GET   /api/users/summaries/{userID}` Get Summaries of User
+## API Documentation
+You can view the documentation of the API via [Postman Documentation of EMS](https://documenter.getpostman.com/view/19777122/UyxjEkai)
 
 ## To Do List
 
+- [ ] User should be able to see all of his/her cards.
 - [ ] User information should be kept in the request object after login.
 - [ ] JWT should be created after login is successful.
 - [x] Assigning card leads to card duplication on user.
