@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: [true, 'Bu email başka bir kullanıcı tarafından kullanılıyor.'],
     required: [true, 'Email girmek zorunludur.'],
-    validate: [validator.isEmail]
+    validate: [validator.isEmail, 'Lütfen geçerli bir email adresi giriniz.']
   },
   password: {
     type: String,
@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
       message: 'Girdiğiniz şifreler uyuşmuyor. Lütfen kontrol ediniz.'
     }
   },
+  passwordChangedAt: Date,
   cards: [
     {
       type: mongoose.SchemaTypes.ObjectID,
@@ -64,13 +65,21 @@ const userSchema = new mongoose.Schema({
 userSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'cards',
-    select: 'ownerName cardNumber expiryDate cardType -_id'
+    select: 'ownerName cardNumber expiryDate cardType'
   });
 
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 userSchema.pre('save', async function (next) {
+  // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
   // Password hashing with cost of 12
@@ -93,6 +102,19 @@ userSchema.methods.correctPassword = async function (
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    return JWTTimeStamp < changedTimeStamp;
+  }
+
+  return false;
 };
 
 // 4) EXPORT

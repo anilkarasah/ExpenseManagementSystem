@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const slugify = require('slugify');
 const catchAsync = require('../utils/catchAsync');
+const { promisify } = require('util');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const Summary = require('../models/summaryModel');
@@ -37,10 +38,11 @@ const createSendToken = (user, statusCode, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization
+    // req.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization;
+    // token = req.headers.authorization.split(' ')[1];
   }
 
   if (!token) {
@@ -70,6 +72,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // GRANTS USER TO ACCESS PROTECTED ROUTE
   req.user = freshUser;
+  console.log(req.user);
   next();
 });
 
@@ -155,6 +158,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // Update user's password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  createSendToken(user, 200, res);
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
+    return next(new AppError('Mevcut şifre hatalı girildi.', 401));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+
   await user.save();
 
   createSendToken(user, 200, res);

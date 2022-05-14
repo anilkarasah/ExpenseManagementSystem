@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Card = require('../models/cardModel');
 const Summary = require('../models/summaryModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -12,34 +13,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.assignCard = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user)
-    return next(new AppError("Bu ID'ye sahip kullanıcı bulunamadı.", 404));
-
-  console.log(user.cards);
-  console.log(req.body.card);
-
-  user.cards.map((card) => {
-    if (card === req.body.card)
-      return next(new AppError('Bu kart zaten bu kullanıcıya kayıtlı.', 406));
-  });
-
-  user.cards.push(req.body.card);
-
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {
-    new: true,
-    runValidators: true
-  });
-
-  res.status(200).json({
-    message: 'success',
-    data: {
-      user: updatedUser
-    }
-  });
-});
+// SUMMARY RELATED CONTROLLERS
 
 exports.listSummaries = catchAsync(async (req, res, next) => {
   const summaries = await Summary.find();
@@ -57,7 +31,7 @@ exports.listSummaries = catchAsync(async (req, res, next) => {
 });
 
 exports.listSummariesOfUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id).select('name email');
+  const user = await User.findById(req.params.id);
   if (!user) {
     return next(
       new AppError('Bu email adresine kayıtlı kullanıcı bulunamadı.', 404)
@@ -74,7 +48,6 @@ exports.listSummariesOfUser = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      user,
       summaries
     }
   });

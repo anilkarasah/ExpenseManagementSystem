@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.route('/').get(userController.getAllUsers);
+router.route('/').get(authController.protect, userController.getAllUsers);
 
 router.route('/signup').post(authController.signup);
 router.route('/login').post(authController.login);
@@ -14,7 +14,11 @@ router
   .post(authController.forgotPassword)
   .patch(authController.resetPassword);
 
-router.route('/assignCard/:id').patch(userController.assignCard);
+router.patch(
+  '/updatePassword',
+  authController.protect,
+  authController.updatePassword
+);
 
 router.route('/summaries').get(userController.listSummaries);
 router.route('/summaries/:id').get(userController.listSummariesOfUser);
