@@ -78,20 +78,33 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('Bu işlemi yapmak için uygun role sahip değilsiniz.', 403)
+      );
+    }
+
+    next();
+  };
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
     securityQuestion: req.body.securityQuestion,
     questionAnswer: req.body.questionAnswer
   });
 
   const userSummary = await Summary.create({
-    user: newUser._id,
-    isCurrent: true
+    user: newUser._id
   });
+
+  newUser.currentSummary = userSummary._id;
+  await newUser.save();
 
   res.status(201).json({
     status: 'success',
@@ -159,7 +172,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // Update user's password
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
 
   createSendToken(user, 200, res);
@@ -173,9 +185,35 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
 
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
 
   await user.save();
 
   createSendToken(user, 200, res);
+});
+
+exports.grantRole = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(
+      new AppError('Bu email adresine kayıtlı kullanıcı bulunamadı.', 404)
+    );
+  }
+
+  const role = req.body.role ? req.body.role : 'user';
+
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { role },
+    {
+      new: true,
+      runValidators: true
+    }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser
+    }
+  });
 });

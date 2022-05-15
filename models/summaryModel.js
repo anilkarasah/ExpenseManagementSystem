@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const monthNames = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
+  'Ocak',
+  'Şubat',
+  'Mart',
+  'Nisan',
+  'Mayıs',
+  'Haziran',
+  'Temmuz',
+  'Ağustos',
+  'Eylül',
+  'Ekim',
+  'Kasım',
+  'Aralık'
 ];
 
 function getMonthName() {
@@ -34,7 +34,27 @@ const summarySchema = new mongoose.Schema({
   startsAt: {
     type: Date,
     default: Date.now()
-  }
+  },
+  expenseList: [
+    {
+      type: mongoose.SchemaTypes.ObjectID,
+      ref: 'Expense'
+    }
+  ]
+});
+
+// PRE MIDDLEWARES
+
+summarySchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'user',
+    select: 'name email'
+  }).populate({
+    path: 'expenseList',
+    select: '-_id -__v'
+  });
+
+  next();
 });
 
 const Summary = mongoose.model('Summary', summarySchema);

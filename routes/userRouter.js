@@ -4,7 +4,13 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.route('/').get(authController.protect, userController.getAllUsers);
+router
+  .route('/')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    userController.getAllUsers
+  );
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
@@ -20,7 +26,7 @@ router.patch(
   authController.updatePassword
 );
 
-router.route('/summaries').get(userController.listSummaries);
-router.route('/summaries/:id').get(userController.listSummariesOfUser);
+router.patch('/grantRole', authController.grantRole);
+router.patch('/updateMe', authController.protect, userController.updateMe);
 
 module.exports = router;

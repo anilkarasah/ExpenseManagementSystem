@@ -1,21 +1,27 @@
 const mongoose = require('mongoose');
 
+// SCHEMA DECLARATION
+
 const expenseSchema = new mongoose.Schema({
-  summary: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: 'Summary',
-    required: [
-      true,
-      'Harcamanın, herhangi bir aylık özete bağlı olması zorunludur.'
-    ]
+  isCash: {
+    type: Boolean,
+    default: false
   },
   card: {
     type: mongoose.SchemaTypes.ObjectID,
     ref: 'Card'
   },
   expenseType: {
-    type: mongoose.SchemaTypes.ObjectID,
-    ref: 'ExpenseType'
+    type: String,
+    enum: [
+      'food-drink',
+      'entertainment',
+      'subscription',
+      'shopping',
+      'health',
+      'other'
+    ],
+    default: 'other'
   },
   amount: {
     type: Number,
@@ -26,3 +32,11 @@ const expenseSchema = new mongoose.Schema({
     default: Date.now()
   }
 });
+
+// PRE MIDDLEWARE
+
+// EXPORT
+
+const Expense = mongoose.model('Expense', expenseSchema);
+
+module.exports = Expense;

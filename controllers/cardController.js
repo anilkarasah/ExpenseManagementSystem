@@ -18,6 +18,24 @@ exports.getAllCards = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getCardsOfUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user.cards) {
+    return next(
+      new AppError('Kullanıcıya kayıtlı hiçbir kart bulunamadı.', 404)
+    );
+  }
+
+  res.status(200).json({
+    status: 'success',
+    results: user.cards.length,
+    data: {
+      cards: user.cards
+    }
+  });
+});
+
 exports.createCard = catchAsync(async (req, res, next) => {
   const newCard = await Card.create(req.body);
 
@@ -30,8 +48,6 @@ exports.createCard = catchAsync(async (req, res, next) => {
 });
 
 exports.assignCard = catchAsync(async (req, res, next) => {
-  console.log(req.user);
-  // const user = await User.findById(req.user.id);
   const user = req.user;
 
   const card = await Card.findById(req.body.card);
@@ -55,27 +71,6 @@ exports.assignCard = catchAsync(async (req, res, next) => {
     message: 'success',
     data: {
       user: updatedUser
-    }
-  });
-});
-
-exports.listCardsOfUser = catchAsync(async (req, res, next) => {
-  const user = User.findById(req.params.id);
-  if (!user) {
-    return next(new AppError('Kullanıcı bulunamadı.', 404));
-  }
-
-  const cards = Card.find({ user });
-  if (!cards) {
-    return next(
-      new AppError('Bu kullanıcıya ait hiçbir kart bulunamadı.', 404)
-    );
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      cards
     }
   });
 });

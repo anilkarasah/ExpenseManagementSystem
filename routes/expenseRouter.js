@@ -1,5 +1,5 @@
 const express = require('express');
-const cardController = require('../controllers/cardController');
+const expenseController = require('../controllers/expenseController');
 const authController = require('../controllers/authController');
 
 const router = express.Router();
@@ -9,14 +9,12 @@ router
   .get(
     authController.protect,
     authController.restrictTo('admin'),
-    cardController.getAllCards
+    expenseController.listAllExpenses
   )
-  .post(cardController.createCard);
-
-router.route('/:id').get(cardController.getCardsOfUser);
+  .post(authController.protect, expenseController.newExpense);
 
 router
-  .route('/assign')
-  .patch(authController.protect, cardController.assignCard);
+  .route('/:id')
+  .get(authController.protect, expenseController.listExpensesOfUser);
 
 module.exports = router;

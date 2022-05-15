@@ -18,9 +18,13 @@ if (process.env.NODE_ENV === 'development') {
 
 const userRouter = require('./routes/userRouter');
 const cardRouter = require('./routes/cardRouter');
+const summaryRouter = require('./routes/summaryRouter');
+const expenseRouter = require('./routes/expenseRouter');
 
 app.use('/api/users', userRouter);
 app.use('/api/cards', cardRouter);
+app.use('/api/summaries', summaryRouter);
+app.use('/api/expenses', expenseRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

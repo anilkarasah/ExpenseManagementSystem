@@ -22,16 +22,6 @@ const userSchema = new mongoose.Schema({
     minlength: [8, 'Parola en az 8 karakterden oluşmalıdır.'],
     select: false
   },
-  passwordConfirm: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (el) {
-        return el === this.password;
-      },
-      message: 'Girdiğiniz şifreler uyuşmuyor. Lütfen kontrol ediniz.'
-    }
-  },
   passwordChangedAt: Date,
   cards: [
     {
@@ -57,6 +47,15 @@ const userSchema = new mongoose.Schema({
   questionAnswer: {
     type: String,
     required: [true, 'Lütfen güvenlik sorusunun cevabını giriniz.']
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  currentSummary: {
+    type: mongoose.SchemaTypes.ObjectID,
+    ref: 'Summary'
   }
 });
 
@@ -84,7 +83,6 @@ userSchema.pre('save', async function (next) {
 
   // Password hashing with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
 
   next();
 });
