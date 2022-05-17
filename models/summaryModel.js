@@ -16,8 +16,8 @@ const monthNames = [
 ];
 
 function getMonthName() {
-  const now = new Date().getMonth();
-  return monthNames[now];
+  const thisMonth = new Date().getMonth();
+  return monthNames[thisMonth];
 }
 
 const summarySchema = new mongoose.Schema({
@@ -33,7 +33,7 @@ const summarySchema = new mongoose.Schema({
   },
   startsAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   expenseList: [
     {
@@ -45,17 +45,14 @@ const summarySchema = new mongoose.Schema({
 
 // PRE MIDDLEWARES
 
-summarySchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'user',
-    select: 'name email'
-  }).populate({
-    path: 'expenseList',
-    select: '-_id -__v'
-  });
+// summarySchema.pre([/^find/, 'populate'], function (next) {
+//   this.populate({
+//     path: 'expenseList',
+//     select: 'expenseType card amount spentAt'
+//   });
 
-  next();
-});
+//   next();
+// });
 
 const Summary = mongoose.model('Summary', summarySchema);
 

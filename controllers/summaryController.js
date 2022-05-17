@@ -4,7 +4,10 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.listSummaries = catchAsync(async (req, res, next) => {
-  const summaries = await Summary.find();
+  const summaries = await Summary.find().populate({
+    path: 'expenseList',
+    select: 'expenseType card amount spentAt'
+  });
 
   if (!summaries) {
     return next(new AppError('Hiçbir kullanıcı özeti bulunamadı.', 404));
@@ -20,14 +23,11 @@ exports.listSummaries = catchAsync(async (req, res, next) => {
 });
 
 exports.listSummariesOfUser = catchAsync(async (req, res, next) => {
-  // const user = await User.findById(req.params.id);
-  // if (!user) {
-  //   return next(
-  //     new AppError('Bu email adresine kayıtlı kullanıcı bulunamadı.', 404)
-  //   );
-  // }
+  const summaries = await Summary.find({ user: req.params.id }).populate({
+    path: 'expenseList',
+    select: 'expenseType card amount spentAt'
+  });
 
-  const summaries = await Summary.find({ user: req.user }).select('-__v -user');
   if (!summaries) {
     return next(
       new AppError('Bu kullanıcıya kayıtlı hiçbir özete ulaşılamadı.', 404)

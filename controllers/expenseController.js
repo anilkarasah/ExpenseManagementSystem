@@ -4,6 +4,23 @@ const Expense = require('../models/expenseModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+const checkIfCardExists = (user, cardID) => {
+  let flag = false;
+
+  const userCardList = user.depopulate('cards').cards;
+  if (!userCardList) {
+    return flag;
+  }
+
+  userCardList.map((el) => {
+    if (el.toString() === cardID) {
+      flag = true;
+    }
+  });
+
+  return flag;
+};
+
 exports.listAllExpenses = catchAsync(async (req, res, next) => {
   const expenses = await Expense.find();
   if (!expenses) {
@@ -35,14 +52,22 @@ exports.listExpensesOfUser = catchAsync(async (req, res, next) => {
 });
 
 exports.newExpense = catchAsync(async (req, res, next) => {
-  const body = { ...req.body };
   const summary = await Summary.findById(req.user.currentSummary);
 
-  if (!body.card) {
-    body.isCash = true;
+  if (!req.body.card) {
+    // Expense is spent by cash
+    req.body.isCash = true;
+  } else if (!checkIfCardExists(req.user, req.body.card)) {
+    // Expense is spent by a card
+    return next(
+      new AppError(
+        'Üzerinize kayıtlı olmayan bir kart ile harcama yapamazsınız.',
+        404
+      )
+    );
   }
 
-  const expense = await Expense.create(body);
+  const expense = await Expense.create(req.body);
 
   summary.expenseList.push(expense._id);
   await summary.save();

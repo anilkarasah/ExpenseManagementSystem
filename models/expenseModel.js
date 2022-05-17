@@ -29,7 +29,7 @@ const expenseSchema = new mongoose.Schema({
   },
   spentAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 

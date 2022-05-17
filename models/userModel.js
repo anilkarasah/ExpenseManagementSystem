@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
   ],
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   securityQuestion: {
     type: String,
@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
     default: 'user'
   },
   currentSummary: {
-    type: mongoose.SchemaTypes.ObjectID,
+    type: mongoose.SchemaTypes.ObjectId,
     ref: 'Summary'
   }
 });
@@ -65,6 +65,9 @@ userSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'cards',
     select: 'ownerName cardNumber expiryDate cardType'
+  }).populate({
+    path: 'currentSummary',
+    select: 'month expenseList'
   });
 
   next();
