@@ -21,7 +21,7 @@ const cardRouter = require('./routes/cardRouter');
 const summaryRouter = require('./routes/summaryRouter');
 const expenseRouter = require('./routes/expenseRouter');
 
-app.use('/api/main', mainPageRouter);
+app.use('/api/me', mainPageRouter);
 app.use('/api/users', userRouter);
 app.use('/api/cards', cardRouter);
 app.use('/api/summaries', summaryRouter);
