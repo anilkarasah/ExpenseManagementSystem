@@ -22,7 +22,6 @@ const cardSchema = new mongoose.Schema({
       validator: (number) => validator.isCreditCard(number),
       message: 'Girdiğiniz kart numarası geçerli değil.'
     },
-    unique: true,
     get: maskCardNumber
   },
   expiryDate: {

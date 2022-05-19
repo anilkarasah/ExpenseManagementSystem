@@ -10,13 +10,8 @@ router
     authController.protect,
     authController.restrictTo('admin'),
     cardController.getAllCards
-  )
-  .post(cardController.createCard);
+  );
 
-router.route('/:id').get(cardController.getCardsOfUser);
-
-router
-  .route('/assign')
-  .patch(authController.protect, cardController.assignCard);
+router.get('/:id', cardController.getCardsOfUser);
 
 module.exports = router;

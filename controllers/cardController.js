@@ -36,41 +36,17 @@ exports.getCardsOfUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createCard = catchAsync(async (req, res, next) => {
-  const newCard = await Card.create(req.body);
+exports.newCard = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const card = await Card.create(req.body);
+
+  user.cards.push(card);
+  await user.save();
 
   res.status(201).json({
     status: 'success',
     data: {
-      card: newCard
-    }
-  });
-});
-
-exports.assignCard = catchAsync(async (req, res, next) => {
-  const user = req.user;
-
-  const card = await Card.findById(req.body.card);
-  if (!card) return next(new AppError('Kart bulunamadı.', 404));
-
-  // Check if user already has the card
-  user.cards.map((el) => {
-    if (el._id.toString() === req.body.card) {
-      return next(new AppError('Bu kart zaten bu kullanıcıya kayıtlı.', 406));
-    }
-  });
-
-  user.cards.push(card._id);
-
-  const updatedUser = await User.findByIdAndUpdate(user._id, user, {
-    new: true,
-    runValidators: true
-  });
-
-  res.status(200).json({
-    message: 'success',
-    data: {
-      user: updatedUser
+      card
     }
   });
 });

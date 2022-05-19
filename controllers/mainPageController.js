@@ -93,6 +93,15 @@ exports.expensePage = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.cardPage = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    data: {
+      cards: req.user.cards
+    }
+  });
+});
+
 exports.subsPage = catchAsync(async (req, res, next) => {
   const expenses = (
     await Summary.findById(req.user.currentSummary).populate({
