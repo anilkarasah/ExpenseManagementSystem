@@ -25,7 +25,13 @@ const expenseSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: [true, 'Harcamanın miktarı girilmek zorundadır.']
+    required: [true, 'Harcamanın miktarı girilmek zorundadır.'],
+    validate: {
+      validator: function (amount) {
+        return amount > 0;
+      },
+      message: `Harcama tutarı 0TL'den fazla olmalıdır.`
+    }
   },
   spentAt: {
     type: Date,

@@ -70,10 +70,6 @@ exports.newExpensePage = catchAsync(async (req, res, next) => {
 exports.newExpense = catchAsync(async (req, res, next) => {
   const summary = await Summary.findById(req.user.currentSummary);
 
-  if (req.body.amount <= 0) {
-    return next(new AppError("Harcama miktarı 0TL'den fazla olmalıdır.", 400));
-  }
-
   if (!req.body.card) {
     // Expense is spent by cash
     req.body.isCash = true;
