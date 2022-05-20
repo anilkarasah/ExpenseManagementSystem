@@ -51,15 +51,10 @@ exports.mainPage = catchAsync(async (req, res, next) => {
 
   let spentObj = {};
   for (let index = 0; index < totalSpentArray.length; index++) {
-    let obj;
-    if (totalSpentArray[index] === 0) {
-      obj = undefined;
-    } else {
-      obj = {
-        spent: totalSpentArray[index],
-        percentage: (totalSpentArray[index] * 100) / totalSpent
-      };
-    }
+    const obj = {
+      spent: totalSpentArray[index],
+      percentage: (totalSpentArray[index] * 100) / totalSpent
+    };
     spentObj[expenseTypes[index]] = obj;
   }
 

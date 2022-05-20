@@ -39,6 +39,16 @@ const expenseSchema = new mongoose.Schema({
   }
 });
 
+// PRE MIDDLEWARES
+
+expenseSchema.pre('save', function (next) {
+  if (this.card == null) {
+    this.card = undefined;
+  }
+
+  next();
+});
+
 // EXPORT
 
 const Expense = mongoose.model('Expense', expenseSchema);
