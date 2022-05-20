@@ -51,6 +51,22 @@ exports.listExpensesOfUser = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.newExpensePage = catchAsync(async (req, res, next) => {
+  const cards = (
+    await User.findById(req.user._id).populate({
+      path: 'cards',
+      select: 'cardNumber'
+    })
+  ).cards;
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      cards
+    }
+  });
+});
+
 exports.newExpense = catchAsync(async (req, res, next) => {
   const summary = await Summary.findById(req.user.currentSummary);
 

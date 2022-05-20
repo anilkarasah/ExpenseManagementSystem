@@ -10,8 +10,7 @@ router.get('/', authController.protect, mainController.mainPage);
 
 router
   .route('/expense')
-  .get(authController.protect, mainController.expensePage)
-  .post(authController.protect, expenseController.newExpense);
+  .get(authController.protect, mainController.expensePage);
 
 router
   .route('/card')
@@ -19,5 +18,10 @@ router
   .post(authController.protect, cardController.newCard);
 
 router.get('/subs', authController.protect, mainController.subsPage);
+
+router
+  .route('/expense/new')
+  .get(authController.protect, expenseController.newExpensePage)
+  .post(authController.protect, expenseController.newExpense);
 
 module.exports = router;

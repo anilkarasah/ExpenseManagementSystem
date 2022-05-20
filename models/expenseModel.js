@@ -33,8 +33,6 @@ const expenseSchema = new mongoose.Schema({
   }
 });
 
-// PRE MIDDLEWARE
-
 // EXPORT
 
 const Expense = mongoose.model('Expense', expenseSchema);
