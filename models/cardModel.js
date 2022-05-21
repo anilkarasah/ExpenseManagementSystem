@@ -48,15 +48,10 @@ const cardSchema = new mongoose.Schema({
     type: String,
     enum: ['Credit Card', 'Bank Card'],
     default: 'Credit Card'
-  },
-  limit: Number
+  }
 });
 
-// 2) PRE MIDDLEWARE
-
-//
-
-// 3) EXPORT
+// 2) EXPORT
 
 const Card = mongoose.model('Card', cardSchema);
 

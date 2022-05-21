@@ -71,14 +71,3 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     }
   });
 });
-
-exports.mainPage = catchAsync(async (req, res, next) => {
-  console.log(req.user);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user: req.user
-    }
-  });
-});

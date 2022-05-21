@@ -43,17 +43,6 @@ const summarySchema = new mongoose.Schema({
   ]
 });
 
-// PRE MIDDLEWARES
-
-// summarySchema.pre([/^find/, 'populate'], function (next) {
-//   this.populate({
-//     path: 'expenseList',
-//     select: 'expenseType card amount spentAt'
-//   });
-
-//   next();
-// });
-
 const Summary = mongoose.model('Summary', summarySchema);
 
 module.exports = Summary;
