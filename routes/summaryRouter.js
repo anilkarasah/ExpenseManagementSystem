@@ -11,6 +11,12 @@ router
     authController.restrictTo('admin'),
     summaryController.listSummaries
   );
-router.route('/:id').get(summaryController.listSummariesOfUser);
+router
+  .route('/:id')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    summaryController.listSummariesOfUser
+  );
 
 module.exports = router;

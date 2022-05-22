@@ -26,7 +26,13 @@ router.patch(
   authController.updatePassword
 );
 
-router.patch('/grantRole', authController.grantRole);
+router.patch(
+  '/grantRole',
+  authController.protect,
+  authController.restrictTo('admin'),
+  authController.grantRole
+);
+
 router.patch('/updateMe', authController.protect, userController.updateMe);
 
 module.exports = router;

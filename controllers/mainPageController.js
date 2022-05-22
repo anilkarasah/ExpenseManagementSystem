@@ -17,7 +17,7 @@ const expenseTypes = [
 const expenseIndex = (type) => expenseTypes.findIndex((el) => el === type);
 
 exports.mainPage = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user._id).select('name email');
+  const user = await User.findById(req.user._id).select('name email role');
   user.depopulate();
 
   const summaryID = req.user.currentSummary._id;
@@ -58,6 +58,8 @@ exports.mainPage = catchAsync(async (req, res, next) => {
     spentObj[expenseTypes[index]] = obj;
   }
 
+  const isAdmin = user.role === 'admin';
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -67,7 +69,8 @@ exports.mainPage = catchAsync(async (req, res, next) => {
         email: user.email
       },
       summary,
-      spentData: spentObj
+      spentData: spentObj,
+      isAdmin
     }
   });
 });

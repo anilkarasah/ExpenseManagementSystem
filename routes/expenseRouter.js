@@ -15,6 +15,10 @@ router
 
 router
   .route('/:id')
-  .get(authController.protect, expenseController.listExpensesOfUser);
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    expenseController.listExpensesOfUser
+  );
 
 module.exports = router;

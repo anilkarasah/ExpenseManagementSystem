@@ -12,6 +12,11 @@ router
     cardController.getAllCards
   );
 
-router.get('/:id', cardController.getCardsOfUser);
+router.get(
+  '/:id',
+  authController.protect,
+  authController.restrictTo('admin'),
+  cardController.getCardsOfUser
+);
 
 module.exports = router;
