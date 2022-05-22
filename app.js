@@ -11,10 +11,6 @@ app.use(express.json());
 app.use(hpp());
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-
 const mainPageRouter = require('./routes/mainPageRouter');
 const userRouter = require('./routes/userRouter');
 const cardRouter = require('./routes/cardRouter');
@@ -28,7 +24,7 @@ app.use('/api/summaries', summaryRouter);
 app.use('/api/expenses', expenseRouter);
 
 app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+  next(new AppError(`Bu sunucuda ${req.originalUrl} adresi bulunmuyor.`, 404));
 });
 
 app.use(globalErrorHandler);
