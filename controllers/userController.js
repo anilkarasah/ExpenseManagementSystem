@@ -66,7 +66,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     }
 
     filteredBody.securityQuestion = req.body.securityQuestion;
-    // filteredBody.questionAnswer = req.body.questionAnswer;
 
     const answer = slugify(req.body.questionAnswer, { lower: true });
     filteredBody.questionAnswer = answer;

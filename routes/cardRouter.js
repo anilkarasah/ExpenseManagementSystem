@@ -12,11 +12,16 @@ router
     cardController.getAllCards
   );
 
-router.get(
-  '/:id',
-  authController.protect,
-  authController.restrictTo('admin'),
-  cardController.getCardsOfUser
-);
+router
+  .route('/:id')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    cardController.getCardsOfUser
+  )
+  .delete(
+    authController.protect,
+    cardController.deleteCard
+  );
 
 module.exports = router;
