@@ -26,15 +26,13 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserPage = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-  const cards = await Card.find({_id: req.params.id});
-  const summaries = await Summary.find({_id: req.params.id}).populate('expenseList');
+  const user = await User.findById(req.params.id).populate('cards');
+  const summaries = await Summary.find({user: req.params.id}).select('-user').populate('expenseList');
 
   res.status(200).json({
     status: 'success',
     data: {
       user,
-      cards,
       summaries
     }
   })
